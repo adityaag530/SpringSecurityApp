@@ -28,7 +28,7 @@ authentication responsibility is delegated
     |
 3. Authentication Manager (return the authenticated user to filter)
     |
-4. Authentication Provider (return the authenticated user to authentication manager)
+4. ProviderManager --> Authentication Provider (return the authenticated user to authentication manager)
     - DaoAuthenticationProvider
     - InMemoryAuthenticationPRovider
     - OAuth2AuthenticationProvider
@@ -41,4 +41,25 @@ authentication responsibility is delegated
          |
 8. Dispatcher Servlet and controllers
 
+# Steps for DaoAuthencation
+1. user entity and implements UserDetails (getpassword, getUsername, getAuthorities)
+2. create user repository with this method Optional<User> findByEmail();
+3. create UserService implements UserDetailsService and implement the loadUserByUsername method
+   - springProvider(authentication provider) will use this method to get the user from repository
+
+InMemoryUserDetailManager: (users that we define in application.properties file)
+    - The InMemoryUserDetailManager is a spring security provided implementation of
+      UserDetailsService that stores user information in memory.
+    - purpose: To store user details in memory, typically for testing or small application.
+               you define users directly in the configuration.
+
+4. PasswordEncoder:
+    - The passwordEncoder interface is used for encoding and validating passwords.
+      It has methods for encoding raw passwords and matching encoded passwords.
+    - purpose: to securely hash passwords before storing them and to verify hashed passwords
+               during authentication.
+    - common implementations:
+        - BCryptPasswordEncoder
+        - Pbkdf2PasswordEncoder
+        - SCryptPasswordEncoder
 
