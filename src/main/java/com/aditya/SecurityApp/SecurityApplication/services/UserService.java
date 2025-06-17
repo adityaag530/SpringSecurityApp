@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  * @author adityagupta
  * @date 18/06/25
  */
-@Service
+//@Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 

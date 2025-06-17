@@ -14,9 +14,10 @@
 # custome user and pass for spring basic security
 spring.security.user.name=app
 spring.security.user.password=pass
+spring.security.user.roles[]={ADMIN, DEV, USER}
 
 # Internal Working of Spring Security
-1. incoming request
+1. incoming request --> FilterChain --> DelegatingFilterProxy --> FilterChainProxy
 2. SecurityFilterChain: (fill data in spring security context from headers or request)
     - UsernamePasswordAuthenticationFilter
     - WebAsyncManagerIntegrationFilter
@@ -62,4 +63,31 @@ InMemoryUserDetailManager: (users that we define in application.properties file)
         - BCryptPasswordEncoder
         - Pbkdf2PasswordEncoder
         - SCryptPasswordEncoder
+
+# SecurityFilterChain: (corsFilter, csrfFilter, logoutfilter, usernamePasswordAuthenticationFilter, BearerTokenAuthenticationFilter etc..)
+
+# Creating out own FilterChain
+1. create a WebSecurityConfig class in config package with annotations
+    - @Configuration
+    - @EnableWebSecurity
+2. create bean of SecurityFilterChain:
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        // authorizeHttpRequests - here we define which requests to authenticate to
+        // auth.requestMatchers("/posts/**").permitAll().anyRequest().authenticated()
+        // or auth.requestMatchers("/posts/**").hasAnyRole("ADMIN", "DEV")
+        // in formLogin we can define custome login page
+        // if you disable session then everytime you have to login without any other authenticatio like jwt and all
+        httpSecurity
+                        .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/posts").permitAll()
+                                .requestMatchers("/posts/**").hasAnyRole("ADMIN")
+                                .anyRequest().authenticated())
+                        .csrf(csrfConfig -> csrfConfig.disable())
+                        .sessionManagement(sessionConfig -> sessionConfig
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        .formLogin(Customizer.withDefaults());
+                return httpSecurity.build();
+    }
+
 
