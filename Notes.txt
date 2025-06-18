@@ -90,4 +90,71 @@ InMemoryUserDetailManager: (users that we define in application.properties file)
                 return httpSecurity.build();
     }
 
+# JWT - represents claims to be transferred between two parties
+- Jwt is often used to transmit non-sensitive data that doesn't require confidentiality
+  but still needs integrity and authenticity. This includes user identifiers, roles,
+  permissions, and other claims necessary for making access control decisions.
+1. stateless
+2. scalable in distributed systems (each server can verify jwt, better than csrf - not sure in which server the csrf is stored in which server)
+3. cross domain authentication (test.hello.com, www.hello.in, etc)
+4. ideal for decentralized systems and microservices
+5. Highly secure
 
+# JWT consists of
+    - Header
+    - Payload
+    - Signature
+e.g (Header)      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+    (payload)    .eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0
+    (signature)  .KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30
+Header:
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+payload:
+{
+  "sub": "1234567890",
+  "name": "John Doe",
+  "admin": true,
+  "iat": 1516239022
+}
+signature:
+a-string-secret-at-least-256-bits-long
+
+# JWT - creation
+- Encoded Header in base 64url
+- Encoded Payload in base 64url
+- secrete key - available at the point of token generation - HMAC-SHA256 - base 64url
+- concat with '.' -> token
+
+# Flow of JWT
+       __________login req______ api generates JWT using secret key
+client __________return jwt_____________/     /
+    |_____ further req done with jwt ________/
+
+# Dependencies required for jwt
+        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.12.6</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.12.6</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.12.6</version>
+			<scope>runtime</scope>
+		</dependency>
+
+# steps for JWT configuration
+1. create service for jwt
+    - JwtService - two method (create and verity token)
