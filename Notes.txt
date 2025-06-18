@@ -161,3 +161,5 @@ client __________return jwt_____________/     /
 2. create bean for AuthenticationManager
 3. create AuthController
 4. create AuthService
+
+5. creating jwtfilter before any other filter using chain.doFilter()

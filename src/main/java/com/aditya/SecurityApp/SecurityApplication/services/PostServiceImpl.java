@@ -3,6 +3,7 @@ package com.aditya.SecurityApp.SecurityApplication.services;
 
 import com.aditya.SecurityApp.SecurityApplication.dto.PostDTO;
 import com.aditya.SecurityApp.SecurityApplication.entities.PostEntity;
+import com.aditya.SecurityApp.SecurityApplication.entities.User;
 import com.aditya.SecurityApp.SecurityApplication.exceptions.ResourceNotFoundException;
 import com.aditya.SecurityApp.SecurityApplication.repositories.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,8 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public PostDTO getPostById(Long postId) {
+//        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        log.info("user {}", user);
         PostEntity postEntity = postRepository
                 .findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found with id "+postId));
