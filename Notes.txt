@@ -163,3 +163,25 @@ client __________return jwt_____________/     /
 4. create AuthService
 
 5. creating jwtfilter before any other filter using chain.doFilter()
+
+
+# Authentication Exception(parent)
+AuthenticationException contians several exceptions, use HttpStatus 401 - Unauthorized to handle the response:
+- AccountExpiredException
+- BadCredentialsException
+- CredentialsExpiredException
+- AuthenticationCredentialsNotFoundException
+- SessionAuthenticationException
+
+# Authorization Exception(parent)
+
+# JWT Exception(parent)
+- ExpiredJwtException
+- MalformedJwtException
+- SignatureException
+- UnsupportedJwtException
+- IllegalArgumentException
+
+JwtException - cannot be used with as we used authenticationException in global exception handler
+because the exception is not present in dispatcherservelt
+so we need to use HandlerExceptionResolver in jwtAuthFilter.

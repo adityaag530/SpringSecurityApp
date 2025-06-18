@@ -1,6 +1,7 @@
 package com.aditya.SecurityApp.SecurityApplication.advice;
 
 import com.aditya.SecurityApp.SecurityApplication.exceptions.ResourceNotFoundException;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -22,4 +23,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ApiError> handleAuthenticationException(JwtException ex) {
+        ApiError apiError = new ApiError(ex.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
+    }
 }
