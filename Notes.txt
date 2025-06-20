@@ -185,3 +185,13 @@ AuthenticationException contians several exceptions, use HttpStatus 401 - Unauth
 JwtException - cannot be used with as we used authenticationException in global exception handler
 because the exception is not present in dispatcherservelt
 so we need to use HandlerExceptionResolver in jwtAuthFilter.
+
+
+# Refresh Token - e.g Netflix, Instagram, gmail etc
+Use Two token instead of one ( as token expire quickly):
+1. Access Token (response) -  short lived (5 - 10 min) - used to access the requests but along with that validate the refresh token
+2. Refresh Token(cookie) - long lived (more than a month) lets say
+
+- if access token is not verified use refresh token to get access token
+-
+
