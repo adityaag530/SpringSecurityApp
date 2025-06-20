@@ -45,6 +45,10 @@ public class UserService implements UserDetailsService {
         );
     }
 
+    public User getUserByEmail(String email){
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
     public UserDTO signUp(SignUpDTO signUpDTO) {
         // first we will check if the user is present in db or not
         Optional<User> user = userRepository.findByEmail(signUpDTO.getEmail());
@@ -59,4 +63,7 @@ public class UserService implements UserDetailsService {
     }
 
 
+    public User save(User newUser) {
+        return userRepository.save(newUser);
+    }
 }

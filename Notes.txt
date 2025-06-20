@@ -195,3 +195,26 @@ Use Two token instead of one ( as token expire quickly):
 - if access token is not verified use refresh token to get access token
 -
 
+
+# Configure OAuth2
+- add dependency
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-client</artifactId>
+</dependency>
+
+1. Go to google cloud console
+2. create a project
+3. go to api & services --> Oauth Consent screen --> fil all the details(app name, scopes, testing user .. etc)
+4. go to api & service --> credentials
+    - select aplicaiton type
+    - application name
+    - authorise javascript origin //domains which is accessible from all sub domains
+    - authrisation redirect uris // after login the credentials will be passed to backend url
+        default redirect url - http://localhost:8080/login/oauth2/code/google
+    - create
+
+- add client and secret in application.properties
+5. add oauth2login in websecurityconfig class
+6. create oauth2successhandler
+7.

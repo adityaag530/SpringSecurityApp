@@ -45,13 +45,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request, HttpServletResponse respose){
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request, HttpServletResponse response){
         LoginResponseDTO loginResponseDTO = authService.login(loginDTO);
         Cookie cookie = new Cookie("refreshToken", loginResponseDTO.getRefreshToken());
         // to make sure the cookie is not accessible using js and only through http method it can be used
         cookie.setHttpOnly(true);
         cookie.setSecure("production".equals(deployEnv));// in production this need to be set
-        respose.addCookie(cookie);
+        response.addCookie(cookie);
 
         return ResponseEntity.ok(loginResponseDTO);
     }

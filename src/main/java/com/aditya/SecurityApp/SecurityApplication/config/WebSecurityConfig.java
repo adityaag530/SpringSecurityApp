@@ -2,7 +2,9 @@ package com.aditya.SecurityApp.SecurityApplication.config;
 
 
 import com.aditya.SecurityApp.SecurityApplication.filters.JwtAuthFilter;
+import com.aditya.SecurityApp.SecurityApplication.handlers.Oauth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,9 +29,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class WebSecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final Oauth2SuccessHandler oauth2SuccessHandler;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -38,13 +42,16 @@ public class WebSecurityConfig {
         // if you disable session then everytime you have to login without any other authenticatio like jwt and all
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/posts", "/error", "auth/**").permitAll()
+                        .requestMatchers("/posts", "/error", "/auth/**", "/home.html").permitAll()
 //                        .requestMatchers("/posts/**").authenticated()
                         .anyRequest().authenticated())
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(oauth2config -> oauth2config
+                        .failureUrl("/login?error=true")
+                        .successHandler(oauth2SuccessHandler));
 //                .formLogin(Customizer.withDefaults());
         return httpSecurity.build();
     }
