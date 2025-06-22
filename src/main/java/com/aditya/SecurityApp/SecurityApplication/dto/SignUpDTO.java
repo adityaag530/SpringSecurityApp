@@ -6,6 +6,7 @@ package com.aditya.SecurityApp.SecurityApplication.dto;
  * @date 18/06/25
  */
 
+import com.aditya.SecurityApp.SecurityApplication.entities.enums.Permission;
 import com.aditya.SecurityApp.SecurityApplication.entities.enums.Role;
 import lombok.Data;
 
@@ -17,4 +18,5 @@ public class SignUpDTO {
     private String password;
     private String name;
     private Set<Role> roles;
+    private Set<Permission> permissions;
 }

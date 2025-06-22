@@ -239,3 +239,13 @@ Use Two token instead of one ( as token expire quickly):
     }
 -
 
+# Granular Authorization with Authorities and Permissions
+- Roles represent high-level, permission that are typically associated with a group of user
+    , for e.g. "USER", "ADMIN", MANAGER etc.
+- Authorities also known as privileges or permissions, represent fine-grained access rights
+    within an application for e.g :
+        - different authorities can be defined to allow users to "CREATE", "UPDATE", and "DELETE" a particular resource
+        POST_CREATE, POST_UPDATE, POST_DELETE
+        BLOG_CREATE, BLOG_UPDATE, BLOG_DELETE
+
+-
