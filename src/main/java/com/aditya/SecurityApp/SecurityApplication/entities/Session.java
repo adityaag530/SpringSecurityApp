@@ -2,8 +2,7 @@ package com.aditya.SecurityApp.SecurityApplication.entities;
 
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -13,8 +12,11 @@ import java.time.LocalDateTime;
  * @date 21/06/25
  */
 @Entity
-@Data
+@Setter
+@Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

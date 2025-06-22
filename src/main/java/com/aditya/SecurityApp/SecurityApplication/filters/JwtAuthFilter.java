@@ -58,7 +58,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         user.getEmail(),
                         null,
-                        null
+                        user.getAuthorities()
                 );
                 // below is imp for ipadress and device information , for ratelimiting, ddos attack etc
                 authenticationToken.setDetails(

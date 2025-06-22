@@ -229,3 +229,13 @@ Use Two token instead of one ( as token expire quickly):
     if full -> remote the least recently used session
     else -> Follow step 1
 
+# Authorization (what can you do) vs Authentication (who are you)
+- Create Roles enum
+@Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toSet());
+    }
+-
+

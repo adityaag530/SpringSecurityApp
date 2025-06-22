@@ -1,12 +1,14 @@
 package com.aditya.SecurityApp.SecurityApplication.config;
 
 
+import com.aditya.SecurityApp.SecurityApplication.entities.enums.Role;
 import com.aditya.SecurityApp.SecurityApplication.filters.JwtAuthFilter;
 import com.aditya.SecurityApp.SecurityApplication.handlers.Oauth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,6 +24,9 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static com.aditya.SecurityApp.SecurityApplication.entities.enums.Role.ADMIN;
+import static com.aditya.SecurityApp.SecurityApplication.entities.enums.Role.CREATOR;
+
 /*
  * @author adityagupta
  * @date 18/06/25
@@ -35,6 +40,10 @@ public class WebSecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final Oauth2SuccessHandler oauth2SuccessHandler;
 
+    private static final String[] publicRoutes = {
+            "/error", "/auth/**", "/home.html"
+    };
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         // authorizeHttpRequests - here we define which requests to authenticate to
@@ -42,8 +51,9 @@ public class WebSecurityConfig {
         // if you disable session then everytime you have to login without any other authenticatio like jwt and all
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/posts", "/error", "/auth/**", "/home.html").permitAll()
-//                        .requestMatchers("/posts/**").authenticated()
+                        .requestMatchers(publicRoutes).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/posts/**").hasAnyRole(CREATOR.name(), ADMIN.name())
                         .anyRequest().authenticated())
                 .csrf(csrfConfig -> csrfConfig.disable())
                 .sessionManagement(sessionConfig -> sessionConfig
