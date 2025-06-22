@@ -248,4 +248,23 @@ Use Two token instead of one ( as token expire quickly):
         POST_CREATE, POST_UPDATE, POST_DELETE
         BLOG_CREATE, BLOG_UPDATE, BLOG_DELETE
 
--
+
+# Security Methods Annotations - @Secured and @PreAuthorise
+- to manager all the request matchers and permission in websecurityconfig
+- to enable spring security methods use @EnableMethodSecurity(securedEnabled = true)
+- good rule to use @Secured in controllers
+
+- @PreAuthorize
+- annotation is use to secure methods based on expressions. It allows specifying access rules in method-level security.
+- e.g @PreAuthorize("hasRole('ADMIN')": ensures the user has the ROLE_ADMIN role.
+      @PreAuthorize("hasAuthority('READ_WALLET')"): checks for specific authority.
+      @PreAuthorize("@rideSecurity.isWalletOwner(#id"): calls specific method of a bean.
+
+@Secured and @PreAuthorize vs RequestMatchers
+@secured and @PreAuthorize - apply at method level, offering fine-grained control over whoch can execute specific methods based on roles
+    permission and more complex conditions
+Request matcher - apply at URL level, specifying which requests are allowed or require certain roles/permission
+
+user request matchers to secure a rest api endpoint and ensure that only authenticated
+user can access it. then within the api's service layer, you can use @PerAuthorize to enfore
+specific business rules.
