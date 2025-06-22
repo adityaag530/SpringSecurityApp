@@ -217,4 +217,15 @@ Use Two token instead of one ( as token expire quickly):
 - add client and secret in application.properties
 5. add oauth2login in websecurityconfig class
 6. create oauth2successhandler
-7.
+
+
+# User Sessions management with JWT // can be manager with csrf token but we moved to jwt
+- tracking and managing user login session
+1. Generate AT + RT and store the session using this schema
+(session_id, refreshToken, userId, lastUsedAt)
+
+2. Renew AT using RT, iff RT is not expired and the session is present
+3. Upon a new login request, check if the session limit is full.
+    if full -> remote the least recently used session
+    else -> Follow step 1
+
